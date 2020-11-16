@@ -1,0 +1,74 @@
+import random
+import string
+from IPython.display import display_html
+def restartkernel() :
+    display_html("<script>Jupyter.notebook.kernel.restart()</script>",raw=True)
+
+words = 'cuffs cuing culls cults cumin cupel cupid curbs curds cures panel pangs panic pansy pants papas papal papaw paper parch pards pared pares paris parks parka parry parse parts parte party pasha salaam salads salami salary saline saliva sallow salmon salons saloon salted saluki salute salved salver salves salvia salvos samara sambas samoan sampan sample sancta sanded sander sandal sanest sanity sansei santas  scabby scaled scales scalar scalds scalps scamps scampi scants scanty scared scares bigamy bigger bights bigots bigwig bijoux bikers biking bikini bilged bilges bilked billed billet billow binary binder binges bingos biomes biopsy biotic biotas biotin bipeds birdie births bisect bishop bisque melodies melodeon meltable meltdown membrane mementos memories memorial memoriam memorize menacing menhaden meninges meniscal meniscus mentally menthols mentions mephitic mephitis merchant merciful mercuric meridian tenanting tendering tenderize tenements tenebrous tennessee tenseness tensility tentacles tentative tentmaker tenuously teriyakis termagant terminals terminate terracing terrapins terrarium terrazzos redeposits redescribe redesigned redevelops redigested redirected rediscover redissolve redistrict'
+word_list = words.split()
+
+
+def get_word():
+    word = random.choice(word_list)
+    return word.upper()
+
+
+def play(word):
+    word_completion = "_" * len(word)
+    guessed = False
+    guessed_letters = []
+    guessed_words = []
+    tries = 6
+    print("Let's play Hangman!")
+    print(tries)
+    print(word_completion)
+    print("\n")
+    while not guessed and tries > 0:
+        guess = input("Please guess a letter or word: ").upper()
+        if len(guess) == 1 and guess.isalpha():
+            if guess in guessed_letters:
+                print("You already guessed the letter", guess)
+            elif guess not in word:
+                print(guess, "is not in the word.")
+                tries -= 1
+                guessed_letters.append(guess)
+            else:
+                print("Good job,", guess, "is in the word!")
+                guessed_letters.append(guess)
+                word_as_list = list(word_completion)
+                indices = [i for i, letter in enumerate(word) if letter == guess]
+                for index in indices:
+                    word_as_list[index] = guess
+                word_completion = "".join(word_as_list)
+                if "_" not in word_completion:
+                    guessed = True
+        elif len(guess) == len(word) and guess.isalpha():
+            if guess in guessed_words:
+                print("You already guessed the word", guess)
+            elif guess != word:
+                print(guess, "is not the word.")
+                tries -= 1
+                guessed_words.append(guess)
+            else:
+                guessed = True
+                word_completion = word
+        else:
+            print("Not a valid guess.")
+        print(tries)
+        print(word_completion)
+        print("\n")
+    if guessed:
+        print("Congrats, you guessed the word! You win!")
+    else:
+        print("Sorry, you ran out of tries. The word was " + word + ". Maybe next time!")
+def main():
+    word = get_word()
+    play(word)
+    while input("Play Again? (Y/N) ").upper() == "Y":
+        word = get_word()
+        play(word)
+start = input('Do you want to play hangman? Yes or No')
+if start in ['n', 'N', 'no', 'No', 'NO']:
+    print('Awwww! Your no fun :(')
+if start in ['y', 'Y', 'yes', 'Yes', 'YES']:
+    main()
