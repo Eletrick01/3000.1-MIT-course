@@ -1,0 +1,23 @@
+import random
+def get_permutations(lst):
+    if len(lst) == 0: 
+        return [] 
+
+    if len(lst) == 1: 
+        return [lst] 
+  
+  
+    l = [] 
+  
+    for i in range(len(lst)): 
+       m = lst[i] 
+  
+       remLst = lst[:i] + lst[i+1:] 
+  
+       for p in get_permutations(remLst): 
+           l.append([m] + p) 
+    return l 
+word = input('Type in a sequence of numbers and or letters to get all the possible permutations:')
+data = list(word)
+for p in get_permutations(data): 
+    print(p)
